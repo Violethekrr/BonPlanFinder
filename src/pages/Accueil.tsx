@@ -1,8 +1,10 @@
-import React from 'react'
+
 
 export default function Accueil() {
   return (
-    <div>
+    <div className=''>
+      
+   
       Accueil
     </div>
   )

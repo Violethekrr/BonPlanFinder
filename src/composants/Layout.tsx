@@ -1,6 +1,7 @@
 import {useLocation} from 'react-router-dom';
 import NavBar from './NavBar';
-
+import Footer from './Footer';
+import { useTheme } from '../Context/Theme';
 
 interface Pros {
     children : React.ReactNode;
@@ -14,18 +15,19 @@ export default function Layout({ children } : Pros) {
     //Verifier si la route actuelle est dans la list
     const hiddenNav = routesNav.includes(location.pathname);
     const hiddenFooter = routesFooter.includes(location.pathname);
-   
+    const {isDark}= useTheme()
+
   return (
-    <div className={``}>
+    <div className={` ${isDark? 'bg-gray-800': 'bg-white '}`}>
          
       <div className={``}>
         {!hiddenNav  && !hiddenFooter && <NavBar/>}
       </div>
 
-      <main className={` `}>{children}</main>
+      <main className={`pt-[10%] bg-amber-300 `}>{children}</main>
 
       <div className={``}>
-        {!hiddenNav  && !hiddenFooter && <NavBar/>}
+        {!hiddenNav  && !hiddenFooter && <Footer/>}
       </div>
     </div>
   )
