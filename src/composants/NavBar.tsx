@@ -40,7 +40,7 @@ export default function Navbar() {
         } ${scrolled ? "shadow-md shadow-gray-700 backdrop-blur-lg " : "bg-none"}`}
       >
         <div>
-          <img src="/bpf1.png" alt="" className={`w-30 h-30 ${isDark? 'rounded-full bg-white': ''}`}/>
+          <img src="/bpf1.png" alt="" className={`w-30 h-30 relative bottom-8 ${isDark? 'rounded-full bg-white': ''}`}/>
         </div>
         <div className={`flex gap-10 justify-center items-center `}>
           <NavLink to="/" className={linkClass("/")}>Accueil</NavLink>
