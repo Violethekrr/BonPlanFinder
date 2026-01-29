@@ -5,7 +5,7 @@ import { useTheme } from "../Context/Theme";
 import { Search, ChevronDown, ChevronUp, SearchX } from "lucide-react";
 import { useState } from "react";
 import type { piecesProps, produitsProps } from "../Constantes";
-import { motion, AnimatePresence, delay } from "framer-motion";
+import { motion, AnimatePresence} from "framer-motion";
 
 export default function Produits() {
 
@@ -145,7 +145,7 @@ export default function Produits() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className={`flex justify-between ${isDark? `border border-gray-700 ` :`${bgBlue}`} p-5 items-center rounded-md max-w-6xl mx-auto w-full`}
+        className={`flex justify-between shadow-2xl ${isDark? `border border-gray-700 ` :`${bgBlue}`} p-5 items-center rounded-md max-w-6xl mx-auto w-full`}
       >
         <div className="flex w-[45%] justify-center items-center sm:w-[70%] bg-white rounded-lg focus-within:border-[#F07D00] border border-transparent overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
           <input  
