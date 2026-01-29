@@ -10,24 +10,24 @@ export default function Layout({ children } : Pros) {
 
     const location = useLocation();
     //La liste des routes où la Navbar et le Footer ne doivent pas apparaître
-    const routesNav = ['/Conatct','*'];
-    const routesFooter= ['/Contact','*'];
+    const routesNav = ['/','/Catalogues','/Produits'];
+    const routesFooter= ['/','/Catalogues','/Produits'];
     //Verifier si la route actuelle est dans la list
     const hiddenNav = routesNav.includes(location.pathname);
     const hiddenFooter = routesFooter.includes(location.pathname);
     const {isDark}= useTheme()
 
   return (
-    <div className={` ${isDark? 'bg-gray-800': 'bg-white '}`}>
+    <div className={` ${isDark? 'bg-gray-800': 'bg-gray-50'} h-full`}>
          
       <div className={``}>
-        {!hiddenNav  && !hiddenFooter && <NavBar/>}
+        {hiddenNav  && hiddenFooter && <NavBar/>}
       </div>
 
-      <main className={`pt-[10%] bg-amber-300 `}>{children}</main>
+      <main className={` pt-18 px-4  h-full`}>{children}</main>
 
       <div className={``}>
-        {!hiddenNav  && !hiddenFooter && <Footer/>}
+        {hiddenNav  && hiddenFooter && <Footer/>}
       </div>
     </div>
   )

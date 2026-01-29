@@ -27,31 +27,31 @@ export default function Navbar() {
     }`;
 
   return (
-    <div>
+    <div className="text-xs md:text-sm xl:text-base">
       {/* Navbar desktop */}
       <motion.div
         initial={{ opacity: 1, y: 0 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5 }}
-        className={`z-20 text-xs md:text-sm xl:text-base hidden fixed w-full  sm:flex sm:justify-between gap-10   p-3 font-medium ${
+        className={`z-20 fixed  hidden  w-full  sm:flex sm:justify-between gap-10   p-3 font-medium h-18 ${
           !isDark
-            ? "text-gray-600 bg-white"
-            : "text-white bg-gray-800 "
-        } ${scrolled ? "shadow-md shadow-gray-700" : "bg-none"}`}
+            ? "text-gray-600 "
+            : "text-white  "
+        } ${scrolled ? "shadow-md shadow-gray-700 backdrop-blur-lg " : "bg-none"}`}
       >
         <div>
-          <img src="/bpf.png" alt="" className={`w-24 h-24 ${isDark? 'rounded-full bg-white': ''}`}/>
+          <img src="/bpf1.png" alt="" className={`w-30 h-30 ${isDark? 'rounded-full bg-white': ''}`}/>
         </div>
         <div className={`flex gap-10 justify-center items-center `}>
           <Link to="/" className={linkClass("/")}>Accueil</Link>
-          <Link to="/Catalogues" className={linkClass("/Catalogues")}>Catalogues</Link>
-          <Link to="/Produits" className={linkClass("/Produits")}>Produits</Link> 
+          <Link to="/Catalogues" className={linkClass("/Catalogues")}>Catalogues</Link> 
+          <Link to="/Contact" className={linkClass("/Contact")}>Contact</Link> 
           <button onClick={()=>toggleTheme()}>{isDark? <Sun /> : <Moon/>}</button>
         </div>
       </motion.div>
 
       {/* Navbar mobile */}
-      <div className="flex justify-between z-20 sm:hidden">
+      <div className="flex fixed w-full justify-between z-20 sm:hidden">
         <div
           onClick={() => setButton(!button)}
           className={` ${textOrange} pt-8 pl-2`}
@@ -77,7 +77,7 @@ export default function Navbar() {
         >
           <Link to="/" className={linkClass("/")}>Accueil</Link>
           <Link to="/Catalogues" className={linkClass("/Catalogues")}>Catalogues</Link>
-          <Link to="/Produits" className={linkClass("/Produits")}>Produits</Link>
+          <Link to="/Contact" className={linkClass("/Contact")}>Contact</Link> 
           <button onClick={()=>toggleTheme()}>{isDark? <Sun /> : <Moon/>}</button>
         </motion.div>
       )}
