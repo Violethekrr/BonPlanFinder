@@ -106,7 +106,7 @@ export default function Produits() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`flex flex-col gap-4 text-xs md:text-sm xl:text-base ${isDark ? 'text-white' : ''}`}
+      className={`bg-gray-50 flex flex-col gap-4 text-xs md:text-sm xl:text-base ${isDark ? 'text-white' : ''}`}
     >
      
       <motion.h2 
