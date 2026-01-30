@@ -9,7 +9,9 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Catalogues() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(2); // valeur par défaut
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [sortOrder, setSortOrder] = useState("A-Z");
+  const [showSortMenu, setShowSortMenu] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,13 +34,23 @@ export default function Catalogues() {
     (cat) => cat.titre.toLowerCase().includes(search.toLowerCase()) || cat.description.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Tri
+  cataloguesFiltre.sort((a, b) => {
+    if(sortOrder === "A-Z") {
+      return a.titre.localeCompare(b.titre);
+    } else {
+      return b.titre.localeCompare(a.titre);
+    }
+  })
+
+  // Pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedCatalogues = cataloguesFiltre.slice(startIndex, endIndex);
 
 
   return (
-    <main className={`w-full flex-col`}>
+    <main className={`w-full flex-col px-8`}>
       {/* En tête  */}
       <section id='header-main' className={`flex-col`}>
         <div className={`flex justify-center items-center ${textBlue} gap-4 my-6`}>
@@ -62,23 +74,30 @@ export default function Catalogues() {
         <div id='titre' className={`flex justify-start items-center font-bold ${textBlue} my-6`}>
           <h4 className='border-b-3 border-b-[#F07D00]'>Trie par</h4>
         </div>
-        <div id='filtre' className='grid grid-cols-4 justify-center items-center gap-1 md:gap-2 lg:gap-12 xl:gap-16 2xl:gap-20 my-6'>
-          <button className='flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] bg-gray-100 shadow-sm rounded-2xl'>
-            <span className='text-xs md:text-sm xl:text-base'>Prix</span>
-            <ChevronDown className='hidden md:block w-4 h-4 md:w-6 md:h-6 xl:w-8 xl:h-8'/>
+        <div id='filtre' className='relative flex justify-start items-center gap-1 md:gap-2 lg:gap-12 xl:gap-16 2xl:gap-20 my-6'>
+          <button
+            onClick={() => setShowSortMenu(!showSortMenu)} 
+            className='flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] bg-gray-50 shadow-sm rounded-2xl'
+          >
+            <span className='text-xs md:text-sm xl:text-base'>{sortOrder}</span>
+            <ChevronDown className='w-4 h-4 md:w-6 md:h-6 xl:w-8 xl:h-8'/>
           </button>
-          <button className='flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] bg-gray-100 shadow-sm rounded-2xl'>
-            <span className='text-xs md:text-sm xl:text-base'>Catégorie</span>
-            <ChevronDown className='hidden md:block w-4 h-4 md:w-6 md:h-6 xl:w-8 xl:h-8'/>
-          </button>
-          <button className='flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] bg-gray-100 shadow-sm rounded-2xl'>
-            <span className='text-xs md:text-sm xl:text-base'>Tendance</span>
-            <ChevronDown className='hidden md:block w-4 h-4 md:w-6 md:h-6 xl:w-8 xl:h-8'/>
-          </button>
-          <button className='flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] bg-gray-100 shadow-sm rounded-2xl'>
-            <span className='text-xs md:text-sm xl:text-base'>Nouveauté</span>
-            <ChevronDown className='hidden md:block w-4 h-4 md:w-6 md:h-6 xl:w-8 xl:h-8'/>
-          </button>
+          {showSortMenu && (
+            <div className="absolute top-full mt-2 bg-white shadow-md rounded-lg z-20">
+              <button
+                onClick={() => { setSortOrder("A-Z"); setShowSortMenu(false); }}
+                className="block px-4 py-2 hover:bg-gray-50 w-full text-left"
+              >
+                A-Z
+              </button>
+              <button 
+                onClick={() => { setSortOrder("Z-A"); setShowSortMenu(false); }} 
+                className='block px-4 py-2 hover:bg-gray-100 w-full text-left'
+              >
+                Z - A
+              </button>
+            </div>
+          )}
         </div>
         <div id='Articles' className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 xl:gap-12 my-6'>
           <AnimatePresence>
@@ -87,7 +106,7 @@ export default function Catalogues() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center text-gray-500 col-span-full"
+                className="text-center text-[#34495E] col-span-full"
               >
                 Aucun catalogue ne correspond à votre recherche.
               </motion.p>

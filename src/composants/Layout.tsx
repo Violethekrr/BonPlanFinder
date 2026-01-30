@@ -18,13 +18,13 @@ export default function Layout({ children } : Pros) {
     const {isDark}= useTheme()
 
   return (
-    <div className={` ${isDark? 'bg-gray-800': 'bg-gray-50'} h-full`}>
+    <div className={` ${isDark? 'bg-gray-800': ''} h-full`}>
          
       <div className={``}>
         {hiddenNav  && hiddenFooter && <NavBar/>}
       </div>
 
-      <main className={` pt-18 px-4  h-full`}>{children}</main>
+      <main className={` pt-18 h-full`}>{children}</main>
 
       <div className={``}>
         {hiddenNav  && hiddenFooter && <Footer/>}
