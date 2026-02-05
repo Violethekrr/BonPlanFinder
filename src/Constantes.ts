@@ -29,6 +29,20 @@ export type piecesProps={
     prix: number;
 }
 
+export type Categories = {
+    id?: number;
+    nom: string;
+    description?: string;
+    image?: string;
+}
+
+export const categories : Categories[] = [
+    {id:1, nom: 'Emballages', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
+    {id:2, nom: 'Boissons', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
+    {id:3, nom: 'Cosmetique', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
+    {id:4, nom: 'Nourriture', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
+]
+
 export const produits : produitsProps[] = [
     {id:1, id_type:1, nom: 'Sac à bec', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
     {id:2, id_type:1, nom: 'pots bec', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
