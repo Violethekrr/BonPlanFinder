@@ -4,13 +4,14 @@ export const bgBlue='bg-[#34495E]'
 export const bgOrange='bg-[#F07D00]'
 export const vert=['#5AA136']
 
-export type typeProps={
 
-    id: number;
-    nom: string;
-    description: string;
-    image: string;
-}
+
+export type Catalogue = { 
+    id: number; 
+    titre: string; 
+    description: string; 
+    image?: string; 
+};
 
 export type produitsProps={
 
@@ -68,7 +69,25 @@ export const pieces : piecesProps[] = [
 
 ]
 
-export const type_produits: typeProps[] = [
 
-    {id:1, nom: 'Emballages', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'}
-]
+
+export const catalogues: Catalogue[] = [
+  {
+    id: 1,
+    titre: "Emballage",
+    description: "Emballage de qualité, à pris exceptionnel et à la qualité incroyable",
+    image: "./emballages.jpg",
+  },
+  {
+    id: 2,
+    titre: "Boisson",
+    description: "Boisson rafraîchissant, à pris exceptionnel et à la qualité incroyable",
+    image: "./boissons.jpg",
+  },
+  {
+    id: 3,
+    titre: "Aliment",
+    description: "Aliment de qualité, à pris exceptionnel et à la qualité incroyable",
+    image: "./aliments.jpg",
+  },
+];

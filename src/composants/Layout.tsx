@@ -18,7 +18,7 @@ export default function Layout({ children } : Pros) {
     const {isDark}= useTheme()
 
   return (
-    <div className={` ${isDark? 'bg-gray-800': 'bg-gray-50'} h-full`}>
+    <div className={` ${isDark? 'bg-gray-800': ''} h-full`}>
          
       <div className={``}>
         {hiddenNav  && hiddenFooter && <NavBar/>}
