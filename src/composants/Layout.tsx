@@ -24,7 +24,7 @@ export default function Layout({ children } : Pros) {
         {hiddenNav  && hiddenFooter && <NavBar/>}
       </div>
 
-      <main className={` pt-18 px-4  h-full`}>{children}</main>
+      <main className={` pt-18 h-full`}>{children}</main>
 
       <div className={``}>
         {hiddenNav  && hiddenFooter && <Footer/>}

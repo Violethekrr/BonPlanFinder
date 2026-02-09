@@ -173,7 +173,7 @@ export default function Accueil() {
     const query = value.toLowerCase().trim();
     const suggestions = [];
 
-    // Rechercher dans les catégories
+
     const categoryMatches = categories
       .filter(category => category.nom.toLowerCase().includes(query))
       .slice(0, 3) // Limiter à 3 catégories

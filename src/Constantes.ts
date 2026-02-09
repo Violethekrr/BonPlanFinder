@@ -35,7 +35,7 @@ export type Categories = {
     description?: string;
     image?: string;
 }
-
+//test
 export const categories : Categories[] = [
     {id:1, nom: 'Emballages', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
     {id:2, nom: 'Boissons', description:'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae quas dLorem ipsum dolor sit,', image:'/1.jpg'},
