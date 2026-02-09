@@ -1,17 +1,20 @@
 export const textBlue='text-[#34495E]'
 export const textOrange='text-[#F07D00]'
+export const borderBlue='border-[#34495E]'
 export const bgBlue='bg-[#34495E]'
 export const bgOrange='bg-[#F07D00]'
 export const vert=['#5AA136']
+import type { IconName } from "./composants/CatalogueCarte";
 
 
+export interface Catalogue {
+  id: number;
+  icone: IconName; // au lieu de string
+  titre: string;
+  description: string;
+  image?: string;
+}
 
-export type Catalogue = { 
-    id: number; 
-    titre: string; 
-    description: string; 
-    image?: string; 
-};
 
 export type produitsProps={
 
@@ -74,20 +77,23 @@ export const pieces : piecesProps[] = [
 export const catalogues: Catalogue[] = [
   {
     id: 1,
+    icone: "package",
     titre: "Emballage",
     description: "Emballage de qualité, à pris exceptionnel et à la qualité incroyable",
     image: "./emballages.jpg",
   },
   {
     id: 2,
+    icone: "boisson",
     titre: "Boisson",
     description: "Boisson rafraîchissant, à pris exceptionnel et à la qualité incroyable",
     image: "./boissons.jpg",
   },
   {
     id: 3,
-    titre: "Aliment",
-    description: "Aliment de qualité, à pris exceptionnel et à la qualité incroyable",
-    image: "./aliments.jpg",
+    icone: "cosmetique",
+    titre: "Cosmétique",
+    description: "Cosmétique de qualité, à pris exceptionnel et à la qualité incroyable",
+    image: "./cosmetiques.jpg",
   },
 ];

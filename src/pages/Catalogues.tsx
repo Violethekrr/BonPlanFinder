@@ -1,9 +1,10 @@
-import { textBlue, catalogues } from "../Constantes"
+import { textBlue, catalogues, bgBlue } from "../Constantes"
 import { Search, ShoppingCart, ChevronDown } from "lucide-react";
 import CatalogueCarte from '../composants/CatalogueCarte';
 import { useEffect, useState } from "react";
 import Pagination from "../composants/Pagination";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "../Context/Theme";
 
 
 export default function Catalogues() {
@@ -12,6 +13,7 @@ export default function Catalogues() {
   const [itemsPerPage, setItemsPerPage] = useState(2);
   const [sortOrder, setSortOrder] = useState("A-Z");
   const [showSortMenu, setShowSortMenu] = useState(false);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,7 +55,7 @@ export default function Catalogues() {
     <main className={`w-full flex-col px-8`}>
       {/* En tête  */}
       <section id='header-main' className={`flex-col`}>
-        <div className={`flex justify-center items-center ${textBlue} gap-4 my-6`}>
+        <div className={`flex justify-center items-center ${isDark ? 'text-white' : textBlue} gap-4 my-6`}>
           <ShoppingCart className={`w-8 h-8 md:w-10 md:h-10 xl:w-12 xl:h-12 text-gray-400`} />
           <h1 className='text-3xl md:text-4xl xl:text-5xl'>Nos catalogues</h1>
         </div>
@@ -71,19 +73,19 @@ export default function Catalogues() {
       </section>
       {/* Corps */}
       <section id='body-main' className='flex-col'>
-        <div id='titre' className={`flex justify-start items-center font-bold ${textBlue} my-6`}>
+        <div id='titre' className={`flex justify-start items-center font-bold ${isDark ? 'text-white' : textBlue} my-6`}>
           <h4 className='border-b-3 border-b-[#F07D00]'>Trie par</h4>
         </div>
         <div id='filtre' className='relative flex justify-start items-center gap-1 md:gap-2 lg:gap-12 xl:gap-16 2xl:gap-20 my-6'>
           <button
             onClick={() => setShowSortMenu(!showSortMenu)} 
-            className='flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] bg-gray-50 shadow-sm rounded-2xl'
+            className={`flex justify-center items-center gap-2 px-4 py-1 text-[#F07D00] ${isDark ? bgBlue : 'bg-gray-50'} shadow-sm rounded-2xl`}
           >
             <span className='text-xs md:text-sm xl:text-base'>{sortOrder}</span>
             <ChevronDown className='w-4 h-4 md:w-6 md:h-6 xl:w-8 xl:h-8'/>
           </button>
           {showSortMenu && (
-            <div className="absolute top-full mt-2 bg-white shadow-md rounded-lg z-20">
+            <div className={`absolute top-full mt-2 ${isDark ? 'bg-gray-50' : bgBlue} shadow-md rounded-lg z-20`}>
               <button
                 onClick={() => { setSortOrder("A-Z"); setShowSortMenu(false); }}
                 className="block px-4 py-2 hover:bg-gray-50 w-full text-left"
@@ -121,7 +123,8 @@ export default function Catalogues() {
               >
                 <CatalogueCarte 
                   item={{
-                    id: cat.id, 
+                    id: cat.id,
+                    icone: cat.icone,
                     titre: cat.titre, 
                     description: cat.description, 
                     image: cat.image 

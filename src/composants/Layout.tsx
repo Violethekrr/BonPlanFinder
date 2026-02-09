@@ -9,7 +9,7 @@ interface Pros {
 export default function Layout({ children } : Pros) {
 
     const location = useLocation();
-    //La liste des routes où la Navbar et le Footer ne doivent pas apparaître
+    //La liste des routes où la Navbar et le Footer doivent apparaître
     const routesNav = ['/','/Catalogues','/Produits'];
     const routesFooter= ['/','/Catalogues','/Produits'];
     //Verifier si la route actuelle est dans la list
