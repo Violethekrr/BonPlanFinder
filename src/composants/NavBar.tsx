@@ -33,14 +33,14 @@ export default function Navbar() {
         initial={{ opacity: 1, y: 0 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5 }}
-        className={`z-20 fixed  hidden  w-full  sm:flex sm:justify-between gap-10   p-3 font-medium h-18 ${
+        className={`z-20 fixed  hidden w-full  sm:flex sm:justify-between gap-10   p-3 font-medium h-18 ${
           !isDark
             ? "text-gray-600 "
             : "text-white  "
         } ${scrolled ? "shadow-md shadow-gray-700 backdrop-blur-lg " : "bg-none"}`}
       >
         <div>
-          <img src="/bpf1.png" alt="" className={`w-30 h-30 relative bottom-8 ${isDark? 'rounded-full bg-white': ''}`}/>
+          <img src="/bpf1.png" alt="" className={`w-30 h-30 relative bottom-8 ${isDark? '': ''}`}/>
         </div>
         <div className={`flex gap-10 justify-center items-center `}>
           <NavLink to="/" className={linkClass("/")}>Accueil</NavLink>
@@ -51,7 +51,7 @@ export default function Navbar() {
       </motion.div>
 
       {/* Navbar mobile */}
-      <div className="flex fixed w-full justify-between z-20 sm:hidden">
+      <div className={`flex fixed w-full h-18 justify-between z-20 sm:hidden ${scrolled ? "shadow-md shadow-gray-700 backdrop-blur-lg " : "bg-none"}`}>
         <div
           onClick={() => setButton(!button)}
           className={` ${textOrange} pt-8 pl-2`}
@@ -69,7 +69,7 @@ export default function Navbar() {
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5 }}
-          className={`z-40 absolute flex flex-col sm:hidden gap-3 p-5 font-medium ${
+          className={`z-40 mt-18 absolute flex flex-col sm:hidden gap-3 p-5 font-medium ${
             !isDark
             ? "text-gray-600 bg-white"
             : "text-white bg-gray-800 "

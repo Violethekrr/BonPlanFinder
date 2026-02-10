@@ -1,9 +1,9 @@
 import { textBlue,bgBlue,bgOrange } from "../Constantes"
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { motion} from "framer-motion";
-
+import { useTheme } from "../Context/Theme";
 export default function Contact() {
-
+const {isDark}= useTheme()
   const containerVariants = {
     hidden: { x: 60, opacity: 0 },
     visible: {
@@ -30,11 +30,11 @@ const image = {
   };
 
   return (
-    <div className='  flex flex-col-reverse sm:grid sm:grid-cols-2 gap-4 text-xs md:text-sm xl:text-base'>
+    <div className='overflow-hidden h-screen flex flex-col-reverse justify-center items-center sm:grid sm:grid-cols-2 gap-4 sm:gap-0 text-xs md:text-sm xl:text-base'>
       <motion.div 
         variants={image}
         initial="hidden"
-        animate="visible" className='p-4 flex flex-col justify-center items-center'>
+        animate="visible" className='flex flex-col justify-center items-center'>
         <img src="/bpf1.png" alt="Icon" />
         <p className={`text-xl md:text-2xl xl:text-3xl font-bold relative bottom-30 ${textBlue}`}>Contactez-nous!!</p>
       </motion.div>
@@ -42,8 +42,8 @@ const image = {
        variants={containerVariants}
        initial="hidden"
        animate="visible"
-       exit="exit" className={`${bgBlue} text-white p-6 shadow-2xl`}>
-        <form className="flex flex-col gap-2 m-10">
+       exit="exit" className={` ${isDark ? `bg-gray-800`:`${bgBlue}`} text-white p-6 shadow-2xl`}>
+        <form className="flex flex-col gap-2 ">
             <div className="flex flex-col gap-2 border-b border-white mb-6">
                 <p>Nom</p>
                 <input name="nom" type="text" className="outline-none placeholder:text-xs placeholder:text-gray-500 pb-2" placeholder="Entrez votre nom" />

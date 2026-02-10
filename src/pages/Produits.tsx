@@ -106,7 +106,7 @@ export default function Produits() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`bg-gray-50 flex flex-col gap-4 text-xs md:text-sm xl:text-base ${isDark ? 'text-white' : ''}`}
+      className={` flex flex-col gap-4 text-xs md:text-sm xl:text-base mx-[5%] ${isDark ? 'text-white' : ''}`}
     >
      
       <motion.h2 
@@ -184,8 +184,8 @@ export default function Produits() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className={`absolute z-20 right-[12%] mt-12 rounded-lg grid grid-cols-1 gap-2 text-center ${
-                  !isDark ? 'bg-white text-black' : `${bgBlue}`
+                className={`absolute z-40 right-[12%] mt-12 rounded-lg grid grid-cols-1 gap-2 text-center ${
+                  !isDark ? 'bg-white text-black' : `bg-gray-800`
                 }`}
               >
                 {triage.map((type, i) => (
@@ -229,15 +229,15 @@ export default function Produits() {
                 scale: 1.03,
                 transition: { duration: 0.3 }
               }}
-              className={`group grid grid-cols-1 rounded-lg shadow-xl ${isDark ? 'bg-gray-800 bg-opacity-50 backdrop-blur-sm shadow-xl hover:shadow-2xl border border-gray-700 hover:border-gray-600' : 'bg-white shadow-lg hover:shadow-2xl'}`}
+              className={`group  grid grid-cols-1 rounded-lg shadow-xl ${isDark ? 'bg-gray-800 bg-opacity-50 backdrop-blur-sm shadow-xl hover:shadow-2xl  border-gray-700 hover:border-gray-600' : 'bg-white shadow-lg hover:shadow-2xl'}`}
             >
-              <div className="relative overflow-hidden h-56 rounded-t-lg">
+              <div className="overflow-hidden h-56 rounded-t-lg">
                 <motion.img 
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.5 }}
                   src={produit.image} 
                   alt={produit.nom} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover bg-center -z-10"
                 />
               </div>
               
@@ -291,7 +291,7 @@ export default function Produits() {
                           initial="hidden"
                           animate="visible"
                           exit="exit"
-                          className={`absolute z-20 mt-12 overflow-hidden shadow-2xl rounded-lg grid grid-cols-1 gap-2 ${!isDark ? 'bg-white' : 'bg-gray-800 backdrop-blur-md'}`}
+                          className={`absolute group-hover:scale-102   transition-transform duration-300 z-100 mt-12 overflow-hidden shadow-2xl rounded-lg grid grid-cols-1 gap-2 ${!isDark ? 'bg-white' : 'bg-gray-800 backdrop-blur-md'}`}
                         >
                           {piece.map((p, idx) => (
                             <motion.div 
