@@ -2,30 +2,30 @@ import { useLocation } from "react-router-dom";
 import { produits, pieces, bgOrange } from "../Constantes"
 import { textOrange, bgBlue } from "../Constantes";
 import { useTheme } from "../Context/Theme";
-import { Search, ChevronDown, ChevronUp, SearchX } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, SearchX, CheckCircle } from "lucide-react";
 import { useState } from "react";
-import type { piecesProps, produitsProps } from "../Constantes";
+import type { panierProps, piecesProps, produitsProps } from "../Constantes";
 import { motion, AnimatePresence} from "framer-motion";
 
 export default function Produits() {
 
   function trierProduits(produits: produitsProps[], type: string, pieces: piecesProps[]): produitsProps[] {
     switch (type) {
-      case "prix >":
+      case "Prix >":
         return [...produits].sort((a, b) => {
           const pa = pieces.find(p => p.id_produit === a.id)?.prix ?? 0;
           const pb = pieces.find(p => p.id_produit === b.id)?.prix ?? 0;
           return pb - pa; 
         });
-      case "prix <":
+      case "Prix <":
         return [...produits].sort((a, b) => {
           const pa = pieces.find(p => p.id_produit === a.id)?.prix ?? 0;
           const pb = pieces.find(p => p.id_produit === b.id)?.prix ?? 0;
           return pa - pb; 
         });
-      case "a-z":
+      case "A-Z":
         return [...produits].sort((a, b) => a.nom.localeCompare(b.nom));
-      case "z-a":
+      case "Z-A":
         return [...produits].sort((a, b) => b.nom.localeCompare(a.nom));
       default:
         return produits;
@@ -33,20 +33,21 @@ export default function Produits() {
   }
 
   const location = useLocation(); 
-  const { isDark } = useTheme();
+  const { isDark ,setPanier,panier} = useTheme();
   const { id } = location.state || {};
   const { nom } = location.state || {};
   const [select, setSelect] = useState<boolean>(false);
-  const [trie, setTrie] = useState<string>('prix <');
+  const [trie, setTrie] = useState<string>('Prix <');
   const [pieceEnCours, setPieceEnCours] = useState<{[key:number]: piecesProps | null}>({});
   const [selectPiece, setSelectPiece] = useState<number | null>(null);
   const [rechercher, setRechercher] = useState('');
-  
+  const [ajouter, setAjouter]= useState<boolean>(false)
+
   const triage = [
-    { id: 1, type: 'prix >' },
-    { id: 1, type: 'prix <' },
-    { id: 2, type: 'a-z' },
-    { id: 3, type: 'z-a' }
+    { id: 1, type: 'Prix >' },
+    { id: 1, type: 'Prix <' },
+    { id: 2, type: 'A-Z' },
+    { id: 3, type: 'Z-A' }
   ];
   
   const produitsEnCours = produits.filter((produit) => produit.id_type === id);
@@ -100,6 +101,27 @@ export default function Produits() {
       }
     }
   };
+
+
+
+const ajouterAuPanier = (produit: produitsProps, piece: piecesProps) => {
+  // si le panier est vide, on commence à 1
+  const newId = panier.length > 0 ? panier[panier.length - 1].id + 1 : 1;
+
+  const nouvelItem: panierProps = {
+    id: newId,
+    produit,
+    piece
+  };
+
+  setPanier([...panier, nouvelItem]);
+  setAjouter(true)
+};
+
+
+
+
+  
 
   return (
     <motion.div 
@@ -218,113 +240,142 @@ export default function Produits() {
         className="max-w-7xl mx-auto w-full pt-5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 pb-10"
       >
         {produitsAffiches.map((produit, i) => {
-          const piece = pieces.filter((p) => p.id_produit === produit.id);
-          const pieceCours = piece[0];
-          
-          return (
-            <motion.div 
-              key={i}
-             
-              whileHover={{ 
-                scale: 1.03,
-                transition: { duration: 0.3 }
-              }}
-              className={`group  grid grid-cols-1 rounded-lg shadow-xl ${isDark ? 'bg-gray-800 bg-opacity-50 backdrop-blur-sm shadow-xl hover:shadow-2xl  border-gray-700 hover:border-gray-600' : 'bg-white shadow-lg hover:shadow-2xl'}`}
-            >
-              <div className="overflow-hidden h-56 rounded-t-lg">
-                <motion.img 
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.5 }}
-                  src={produit.image} 
-                  alt={produit.nom} 
-                  className="w-full h-full object-cover bg-center -z-10"
-                />
-              </div>
-              
-              <div className="grid grid-cols-1 gap-2 p-3">
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className={`font-medium text-sm md:text-lg xl:text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}
-                >
-                  {produit.nom}
-                </motion.p>
-                
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className={`pb-2 border-b ${isDark ? 'text-gray-400 border-gray-700' : 'text-gray-600 border-gray-200'}`}
-                >
-                  {produit.description}
-                </motion.p>
-                
-                <div className="flex justify-between items-center w-full">
-                  <div>
-                    <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Prix</p>
-                    <motion.p 
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.4, type: "spring" }}
-                      className={`font-bold text-xl ${textOrange}`}
-                    >
-                      {pieceEnCours[produit.id]?.prix ?? pieceCours?.prix} <span className="text-sm">FCFA</span>
-                    </motion.p>
-                  </div>
-                  
-                  <div className="flex flex-col gap-3">
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setSelectPiece(selectPiece === produit.id ? null : produit.id)} 
-                      className={`flex items-center gap-1 font-medium rounded-lg px-4 py-2 text-sm transition-all duration-200 ${isDark ? 'bg-gray-700 hover:bg-gray-600 border border-gray-600' : 'bg-gray-100 hover:bg-gray-200 border border-gray-300'}`}
-                    >
-                      {pieceEnCours[produit.id]?.nombre_de_pieces ?? pieceCours?.nombre_de_pieces} pcs
-                      {selectPiece === produit.id ? <ChevronUp className="w-4 h-4"/> : <ChevronDown className="w-4 h-4"/>}
-                    </motion.button>
-                    
-                    <AnimatePresence>
-                      {selectPiece === produit.id && (
-                        <motion.div
-                          variants={dropdownVariants}
-                          initial="hidden"
-                          animate="visible"
-                          exit="exit"
-                          className={`absolute group-hover:scale-102   transition-transform duration-300 z-100 mt-12 overflow-hidden shadow-2xl rounded-lg grid grid-cols-1 gap-2 ${!isDark ? 'bg-white' : 'bg-gray-800 backdrop-blur-md'}`}
-                        >
-                          {piece.map((p, idx) => (
-                            <motion.div 
-                              key={idx}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: idx * 0.05 }}
-                            >
-                              <motion.button 
-                                whileHover={{ backgroundColor: '#F07D00' }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => setPieceEnCours(prev => ({ ...prev, [produit.id]: p }))} 
-                                className={`px-6 py-2 w-full hover:text-white transition-colors duration-150 ${!isDark ? 'text-gray-800' : 'text-white'}`}
-                              >
-                                <div className="flex justify-between items-center">
-                                  <span>{p.nombre_de_pieces} pcs</span>
-                                </div>
-                              </motion.button>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+            // toutes les pièces liées au produit
+            const piece = pieces.filter((p) => p.id_produit === produit.id);
+
+            // pièce sélectionnée (si aucune sélection, on prend la première par défaut)
+            const pieceCours = pieceEnCours[produit.id] ?? piece[0];
+
+            // vérifie si le produit ET la pièce sélectionnée sont déjà dans le panier
+            const dejaDansPanier = panier.some(
+              item => item.produit.id === produit.id && item.piece.id === pieceCours.id
+            );
+
+            return (
+              <motion.div 
+                key={i}
+                whileHover={{ scale: 1.03, transition: { duration: 0.3 } }}
+                className={`group grid grid-cols-1 rounded-lg shadow-xl ${
+                  isDark 
+                    ? 'bg-gray-800 bg-opacity-50 backdrop-blur-sm shadow-xl hover:shadow-2xl border-gray-700 hover:border-gray-600' 
+                    : 'bg-white shadow-lg hover:shadow-2xl'
+                }`}
+              >
+                <div className="overflow-hidden h-56 rounded-t-lg">
+                  <motion.img 
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.5 }}
+                    src={produit.image} 
+                    alt={produit.nom} 
+                    className="w-full h-full object-cover bg-center -z-10"
+                  />
                 </div>
                 
-                 <button className={`${bgOrange} mt-3 py-2 rounded-xl font-semibold text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200`}>
-                  Acheter maintenant
-                </button>
-              </div>
-            </motion.div>
-          );
-        })}
+                <div className="grid grid-cols-1 gap-2 p-3">
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className={`font-medium text-sm md:text-lg xl:text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}
+                  >
+                    {produit.nom}
+                  </motion.p>
+                  
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className={`pb-2 border-b ${isDark ? 'text-gray-400 border-gray-700' : 'text-gray-600 border-gray-200'}`}
+                  >
+                    {produit.description}
+                  </motion.p>
+                  
+                  <div className="flex justify-between items-center w-full">
+                    <div>
+                      <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Prix</p>
+                      <motion.p 
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.4, type: "spring" }}
+                        className={`font-bold text-xl ${textOrange}`}
+                      >
+                        {pieceCours?.prix} <span className="text-sm">FCFA</span>
+                      </motion.p>
+                    </div>
+                    
+                    <div className="flex flex-col gap-3">
+                      <motion.button 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectPiece(selectPiece === produit.id ? null : produit.id)} 
+                        className={`flex items-center gap-1 font-medium rounded-lg px-4 py-2 text-sm transition-all duration-200 ${
+                          isDark 
+                            ? 'bg-gray-700 hover:bg-gray-600 border border-gray-600' 
+                            : 'bg-gray-100 hover:bg-gray-200 border border-gray-300'
+                        }`}
+                      >
+                        {pieceCours?.nombre_de_pieces} {produit.id_type=== 2 ? 'ml':'pcs'}
+                        {selectPiece === produit.id ? <ChevronUp className="w-4 h-4"/> : <ChevronDown className="w-4 h-4"/>}
+                      </motion.button>
+                      
+                      <AnimatePresence>
+                        {selectPiece === produit.id && (
+                          <motion.div
+                            variants={dropdownVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            className={`absolute group-hover:scale-102 transition-transform duration-300 z-100 mt-12 overflow-hidden shadow-2xl rounded-lg grid grid-cols-1 gap-2 ${
+                              !isDark ? 'bg-white' : 'bg-gray-800 backdrop-blur-md'
+                            }`}
+                          >
+                            {piece.map((p, idx) => (
+                              <motion.div 
+                                key={idx}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                              >
+                                <motion.button 
+                                  whileHover={{ backgroundColor: '#F07D00' }}
+                                  whileTap={{ scale: 0.98 }}
+                                  onClick={() => setPieceEnCours(prev => ({ ...prev, [produit.id]: p }))} 
+                                  className={`px-6 py-2 w-full hover:text-white transition-colors duration-150 ${
+                                    !isDark ? 'text-gray-800' : 'text-white'
+                                  }`}
+                                >
+                                  <div className="flex justify-between items-center">
+                                    <span>{p.nombre_de_pieces}</span>
+                                  </div>
+                                </motion.button>
+                              </motion.div>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => {
+                      if (!dejaDansPanier) {
+                        ajouterAuPanier(produit, pieceCours);
+                      }
+                    }}
+                    disabled={dejaDansPanier}
+                    className={`mt-3 py-2 rounded-xl font-semibold text-white shadow-md transition-all duration-200
+                      ${dejaDansPanier 
+                        ? "bg-[#5AA136] cursor-not-allowed" 
+                        : `${bgOrange} hover:shadow-lg transform hover:-translate-y-0.5`}
+                    `}
+                  >
+                    Ajouter au panier
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })}
+
        
       </motion.div>
         {produitsAffiches.length === 0 && (
@@ -389,6 +440,26 @@ export default function Produits() {
           </motion.p>
         </motion.div>
       ) }
+      {ajouter &&
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" >
+          <div className={`flex flex-col justify-center items-center w-[20%] h-[20%] rounded-xl ${!isDark? 'bg-white' : 'bg-gray-800'} shadow-md`}>
+             <div className="flex items-center gap-3 text-[#5AA136]">
+            <CheckCircle className="w-6 h-6" />
+            <p className="font-medium">Produit ajouté au panier !</p>
+          </div>
+       
+      
+         <div className={`px-6 py-4 w-full flex justify-center items-center`}>
+          <button
+            onClick={()=> setAjouter(false)}
+            className={`flex justify-center items-center py-1 rounded-lg w-[40%] transition-colors bg-[#5AA136] hover:bg-[#4b852e] text-white`}
+          >
+             Compris
+          </button>
+        </div>
+          </div>
+         
+      </div> }
     </motion.div>
   );
 }

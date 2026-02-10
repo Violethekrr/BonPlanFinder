@@ -19,6 +19,9 @@ export default function Accueil() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const premierProduit= produits.filter((p)=> p.id_type===2 && p.nom.includes('ananas'))
+  const premierePiece= pieces.filter((p)=> p.id_produit=== premierProduit[0].id)
+
   const [searchSuggestions, setSearchSuggestions] = useState<Array<{
     type: 'produit' | 'categorie';
     id: number;
@@ -50,44 +53,47 @@ export default function Accueil() {
   };
 
   // Étapes du tutoriel
-  const tutorialSteps = [
-    {
-      title: "Bienvenue sur BonPlanFinder! 🎯",
-      description: "Découvrez comment trouver les meilleures offres et économiser de l'argent facilement.",
-      icon: <FiHome className="w-8 h-8" />,
-      action: "Cliquez sur les étapes pour suivre le guide"
-    },
-    {
-      title: "1. Recherchez vos produits 🔍",
-      description: "Utilisez la barre de recherche pour trouver n'importe quel produit. Tapez le nom, la marque ou la catégorie qui vous intéresse.",
-      icon: <FiSearch className="w-8 h-8" />,
-      action: "Essayez de taper 'boisson' dans la recherche"
-    },
-    {
-      title: "2. Explorez par catégories 🏷️",
-      description: "Parcourez nos catégories principales pour découvrir les meilleures offres dans chaque secteur.",
-      icon: <FiTag className="w-8 h-8" />,
-      action: "Cliquez sur une catégorie pour voir ses produits"
-    },
-    {
-      title: "3. Découvrez les bonnes affaires 💰",
-      description: "La section 'Bonnes Affaires du Moment' vous montre les produits les moins chers toutes catégories confondues.",
-      icon: <FiDollarSign className="w-8 h-8" />,
-      action: "Soyez le premier à profiter de ces offres"
-    },
-    {
-      title: "4. Partagez et gagnez ensemble 🤝",
-      description: "Invitez vos amis et partagez les bonnes affaires que vous trouvez. Plus on est nombreux, plus on économise!",
-      icon: <FiShare2 className="w-8 h-8" />,
-      action: "Cliquez sur 'Inviter d'autres personnes'"
-    },
-    {
-      title: "5. Profitez des économies! 🎉",
-      description: "Vous êtes maintenant prêt à faire des économies substantielles sur tous vos achats. Bon shopping!",
-      icon: <FiShoppingBag className="w-8 h-8" />,
-      action: "Commencez vos économies dès maintenant!"
-    }
-  ];
+
+
+const tutorialSteps = [
+  {
+    title: <>Bienvenue sur BonPlanFinder <FiHome className="inline w-6 h-6 ml-2" /></>,
+    description: "Découvrez comment trouver les meilleures offres et économiser de l'argent facilement.",
+    icon: <FiHome className="w-8 h-8 text-white" />,
+    action: "Cliquez sur les étapes pour suivre le guide"
+  },
+  {
+    title: <>1. Recherchez vos produits <FiSearch className="inline w-6 h-6 ml-2" /></>,
+    description: "Utilisez la barre de recherche pour trouver n'importe quel produit. Tapez le nom, la marque ou la catégorie qui vous intéresse.",
+    icon: <FiSearch className="w-8 h-8 text-white" />,
+    action: "Essayez de taper 'boisson' dans la recherche"
+  },
+  {
+    title: <>2. Explorez par catégories <FiTag className="inline w-6 h-6 ml-2" /></>,
+    description: "Parcourez nos catégories principales pour découvrir les meilleures offres dans chaque secteur.",
+    icon: <FiTag className="w-8 h-8 text-white" />,
+    action: "Cliquez sur une catégorie pour voir ses produits"
+  },
+  {
+    title: <>3. Découvrez les bonnes affaires <FiDollarSign className="inline w-6 h-6 ml-2" /></>,
+    description: "La section 'Bonnes Affaires du Moment' vous montre les produits les moins chers toutes catégories confondues.",
+    icon: <FiDollarSign className="w-8 h-8 text-white" />,
+    action: "Soyez le premier à profiter de ces offres"
+  },
+  {
+    title: <>4. Partagez et gagnez ensemble <FiShare2 className="inline w-6 h-6 ml-2" /></>,
+    description: "Invitez vos amis et partagez les bonnes affaires que vous trouvez. Plus on est nombreux, plus on économise!",
+    icon: <FiShare2 className="w-8 h-8 text-white" />,
+    action: "Cliquez sur 'Inviter d'autres personnes'"
+  },
+  {
+    title: <>5. Profitez des économies <FiShoppingBag className="inline w-6 h-6 ml-2" /></>,
+    description: "Vous êtes maintenant prêt à faire des économies substantielles sur tous vos achats. Bon shopping!",
+    icon: <FiShoppingBag className="w-8 h-8 text-white" />,
+    action: "Commencez vos économies dès maintenant!"
+  }
+];
+
 
   // Fonction pour obtenir les 6 produits les moins chers
   const getCheapestProducts = useMemo(() => {
@@ -635,7 +641,7 @@ export default function Accueil() {
               >
                 <div className="h-56 sm:h-64 md:h-72 overflow-hidden">
                   <img
-                    src="/fashion-shoes-sneakers.jpg"
+                    src={premierProduit[0].image}
                     alt="Produit"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -645,26 +651,25 @@ export default function Accueil() {
                   <p className="text-[#F47D1C] text-xs md:text-sm font-medium">Boissons</p>
 
                   <h3 className={`font-semibold text-base md:text-lg group-hover:text-[#F47D1C] transition-colors duration-300 ${isDark ? 'text-white' : ''}`}>
-                    Bouteille de Oranana
+                    {premierProduit[0].nom}
                   </h3>
 
                   <div className="flex items-center gap-3 md:gap-6 flex-wrap">
                     <p className="text-[#7EBA41] font-bold text-base md:text-lg">
-                      500 fcfa
+                      {premierePiece[0].prix} FCFA
                     </p>
-                    <p className={`font-semibold text-sm line-through ${isDark ? 'text-gray-400' : 'text-[#979090]'}`}>
+                    {/* <p className={`font-semibold text-sm line-through ${isDark ? 'text-gray-400' : 'text-[#979090]'}`}>
                       -300 fcfa
                     </p>
                     <div className="bg-[#ECC988] px-2 md:px-3 py-1 rounded">
                       <p className="text-[#B87207] font-bold text-xs md:text-sm">
                         Économisez 600 fcfa
                       </p>
-                    </div>
+                    </div> */}
                   </div>
 
                   <p className={`text-xs md:text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                    Disponible chez ElectroMax, Rue du Commerce.
-                    Signalé par Pierre L.
+                   {premierProduit[0].description}
                   </p>
 
                   <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1`}>
@@ -802,7 +807,7 @@ export default function Accueil() {
             <div className="flex justify-center pt-2">
               <hr className="w-20 md:w-24 border-2 border-[#F47D1C]" />
             </div>
-            <p className={`mt-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className={`text-sm md:text-base xl:text-lg mt-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               Les produits les moins chers toutes catégories confondues
             </p>
           </div>
@@ -840,16 +845,16 @@ export default function Accueil() {
                 </h3>
                 <div className="flex items-center gap-3 md:gap-6 flex-wrap">
                   <p className="text-[#7EBA41] font-bold text-base md:text-lg">
-                    {product.minPrice} fcfa
+                    {product.minPrice} FCFA
                   </p>
-                  <p className={`font-semibold text-sm line-through ${isDark ? 'text-gray-400' : 'text-[#979090]'}`}>
+                  {/* <p className={`font-semibold text-sm line-through ${isDark ? 'text-gray-400' : 'text-[#979090]'}`}>
                     -{Math.floor(product.minPrice * 0.3)} fcfa
                   </p>
                   <div className="bg-[#ECC988] px-2 md:px-3 py-1 rounded">
                     <p className="text-[#B87207] font-bold text-xs md:text-sm">
                       Économisez {Math.floor(product.minPrice * 0.6)} fcfa
                     </p>
-                  </div>
+                  </div> */}
                 </div>
                 <p className={`text-xs md:text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {product.description}
@@ -865,7 +870,7 @@ export default function Accueil() {
                   </div>
                   {product.pieces.length > 0 && (
                     <div className={`text-xs px-2 py-1 rounded ${isDark ? 'bg-gray-600' : 'bg-gray-100'}`}>
-                      À partir de {Math.min(...product.pieces.map(p => p.nombre_de_pieces))} pcs
+                      À partir de {Math.min(...product.pieces.map(p => p.nombre_de_pieces))} {product.id_type===2? 'ml':'pcs'} 
                     </div>
                   )}
                 </div>

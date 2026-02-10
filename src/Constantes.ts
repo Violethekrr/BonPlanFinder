@@ -33,7 +33,11 @@ export type piecesProps={
     prix: number;
 }
 
-
+export type panierProps={
+  id: number;
+  produit: produitsProps;
+  piece: piecesProps;
+}
 
 
 export const produits: produitsProps[] = [
@@ -45,7 +49,7 @@ export const produits: produitsProps[] = [
   {id:6, id_type:1, nom: 'Pôt plastique 1000 ml', description:'Grand pot plastique alimentaire, parfait pour plats préparés ou stockage.', image:'/pot1000.jpg'},
   {id:7, id_type:1, nom: 'Barquette ronde aluminium 12 cm', description:'Barquette aluminium ronde, résistante à la chaleur, idéale pour pâtisseries.', image:'/rond.jpg'},
   {id:8, id_type:1, nom: 'Barquette aluminium 18,5*10,5', description:'Barquette rectangulaire en aluminium, parfaite pour plats cuisinés.', image:'/barquette18.jpg'},
-  {id:9, id_type:1, nom: 'Barquette aluminium 20,5*14', description:'Barquette aluminium de taille moyenne, adaptée aux portions individuelles.', image:'/barquette20.jpg'},
+  {id:9, id_type:1, nom: 'Barquette aluminium 20,5*14', description:'Barquette aluminium de taille moyenne, adaptée aux portions individuelles.', image:'/barquette20.png'},
   {id:10, id_type:1, nom: 'Barquette aluminium 16,5*17,5', description:'Barquette aluminium carrée, pratique pour quiches ou gratins.', image:'/barquette16.jpg'},
   {id:11, id_type:1, nom: 'Barquette aluminium 18*25', description:'Grande barquette aluminium, idéale pour plats familiaux ou traiteur.', image:'/barquette20.jpg'},
   {id:12, id_type:1, nom: 'Mini-pot avec couvercle rattaché 3,5*3,5 cm', description:'Mini pot plastique avec couvercle intégré, parfait pour sauces ou condiments.', image:'/potColé.jpg'},
@@ -68,12 +72,16 @@ export const produits: produitsProps[] = [
   // --- Produits de type 2 : Boissons ---
   {id:24, id_type:2, nom: 'Jus de bissap', description:'Boisson traditionnelle à base de fleurs d’hibiscus, rafraîchissante et riche en antioxydants.', image:'/bissap.jpg'},
   {id:25, id_type:2, nom: 'Jus de fruits ananas-mangue', description:'Mélange exotique d’ananas et de mangue, naturellement sucré et vitaminé.', image:'/ananas.jpg'},
-  {id:26, id_type:2, nom: 'Limonade artisanale', description:'Boisson gazeuse légère et pétillante, préparée avec du citron frais.', image:'/limonade.jpg'},
+  {id:26, id_type:2, nom: 'Limonade artisanale', description:'Boisson  légère et pétillante, préparée avec du citron frais et de la citronelle.', image:'/limonade.jpg'},
 
   // --- Produits de type 2 : Cosmétiques ---
   {id:27, id_type:3, nom: 'Huile de cheveux naturelle', description:'Huile nourrissante pour cheveux, favorise la brillance et la santé capillaire.', image:'/huile.jpg'},
   {id:28, id_type:3, nom: 'Beurre de karité', description:'Produit cosmétique naturel, hydrate et protège la peau et les cheveux.', image:'/beurre.jpg'},
   {id:29, id_type:3, nom: 'Shampoing naturel', description:'Shampoing doux sans produits chimiques, adapté aux cheveux sensibles.', image:'/shampoing.jpg'},
+  {id:30, id_type:3, nom: 'Pommade pour bébé', description:'Protège et hydrate délicatement la peau sensible de votre bébé', image:'/bebe.jpeg'},
+  {id:31, id_type:3, nom: 'Lotion de visage', description:'Nourrit et adoucit la peau de votre visage pour un éclat naturel', image:'/lotion.jpeg'},
+  {id:32, id_type:4, nom: 'Poivron écrasé avec ail 5% oignon 5%', description:'Préparation maison de poivron écrasé avec 5% d’ail et 5% d’oignon, idéale pour assaisonner vos plats.', image:'/poivron.png'}, 
+  {id:33, id_type:4, nom: 'Concentré de tomate maison', description:'Produit artisanal concentré de tomate, riche en goût et parfait pour vos sauces.', image:'/tomate.png'}
 ];
 
 
@@ -120,16 +128,17 @@ export const pieces : piecesProps[] = [
     {id:38, id_produit:23, nombre_de_pieces:25, prix:8000},
     {id:39, id_produit:23, nombre_de_pieces:50, prix:14500},
 
-    // {id:40, id_produit:24, nombre_de_pieces:10, prix:12500},
-    // {id:41, id_produit:24, nombre_de_pieces:50, prix:13000},
-    // {id:42, id_produit:25, nombre_de_pieces:25, prix:8000},
-    // {id:43, id_produit:25, nombre_de_pieces:50, prix:14500},
+    {id:40, id_produit:24, nombre_de_pieces:1000, prix:1000},
+    {id:41, id_produit:25, nombre_de_pieces:1000, prix:2500},
+    {id:42, id_produit:26, nombre_de_pieces:1000, prix:700},
+    {id:43, id_produit:27, nombre_de_pieces:1, prix:2000},
     
-    // {id:44, id_produit:26, nombre_de_pieces:10, prix:12500},
-    // {id:45, id_produit:26, nombre_de_pieces:50, prix:13000},
-    // {id:46, id_produit:27, nombre_de_pieces:25, prix:8000},
-    // {id:47, id_produit:27, nombre_de_pieces:50, prix:14500},
-
+    {id:44, id_produit:28, nombre_de_pieces:1, prix:500},
+    {id:45, id_produit:29, nombre_de_pieces:1, prix:2500},
+    {id:46, id_produit:30, nombre_de_pieces:1, prix:5000},
+    {id:47, id_produit:31, nombre_de_pieces:1, prix:2000},
+    {id:48, id_produit:32, nombre_de_pieces:1, prix:500},
+    {id:49, id_produit:33, nombre_de_pieces:1, prix:1000},
 ]
 
 
@@ -139,21 +148,28 @@ export const catalogues: Catalogue[] = [
     id: 1,
     icone: "package",
     titre: "Emballages",
-    description: "Emballage de qualité, à pris exceptionnel et à la qualité incroyable",
+    description: "Emballage de qualité, à prix exceptionnel et à la qualité incroyable",
     image: "./emballages.jpg",
   },
   {
     id: 2,
     icone: "boisson",
     titre: "Boissons",
-    description: "Boisson rafraîchissant, à pris exceptionnel et à la qualité incroyable",
+    description: "Boisson rafraîchissante, à prix exceptionnel et à la qualité incroyable",
     image: "./boissons.jpg",
   },
   {
     id: 3,
     icone: "cosmetique",
     titre: "Cosmétiques",
-    description: "Cosmétique de qualité, à pris exceptionnel et à la qualité incroyable",
+    description: "Cosmétique de qualité, à prix exceptionnel et à la qualité incroyable",
     image: "./cosmetiques.jpg",
   },
+  {
+    id: 4,
+    icone: "aliment",
+    titre: "Aliments",
+    description: "Produits alimentaires frais et de qualité, à prix exceptionnel",
+    image: "./aliments.jpg",
+  }
 ];

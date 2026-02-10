@@ -1,10 +1,13 @@
 
 import{ createContext, useContext, useState, type ReactNode } from 'react';
+import type { panierProps } from '../Constantes';
 
 // Définition du type du contexte
 type ThemeType = {
   isDark: boolean;
   toggleTheme: () => void;
+  panier: panierProps[] 
+  setPanier: React.Dispatch<React.SetStateAction<panierProps[] >>;
  
 };
 
@@ -29,10 +32,10 @@ type ThemeProviderProps = {
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [isDark, setIsDark] = useState<boolean>(false);
   const toggleTheme = () => setIsDark(prev => !prev);
- 
+ const [panier,setPanier]= useState<panierProps[]>([])
 
   return (
-    <Theme.Provider value={{ isDark, toggleTheme}}>
+    <Theme.Provider value={{ isDark, toggleTheme,panier,setPanier}}>
       {children}
     </Theme.Provider>
   );

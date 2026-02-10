@@ -1,5 +1,5 @@
 import { bgBlue, bgOrange } from "../Constantes"
-import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaWhatsapp } from "react-icons/fa";
 import { useTheme } from "../Context/Theme";
 
 
@@ -13,9 +13,9 @@ export default function Footer() {
         <p className={`h-0.5 ${bgOrange} w-[20%] xl:w-[15%] mb-3`}></p>
         <p className="pb-3">La plateforme collaborative pour trouver les meilleurs prix près de chez vous. <br></br> Rejoingnez notre communauté d'acheteurs avisés</p>
         <div className="flex gap-3 ">
-          <a className="hover:text-[#F07D00] transition-colors duration-300"><FaInstagram className="w-7 h-7"/></a>
-          <a className="hover:text-[#F07D00] transition-colors duration-300"><FaFacebook className="w-7 h-7"/></a> 
-          <a className="hover:text-[#F07D00] transition-colors duration-300"><FaWhatsapp className="w-7 h-7"/></a>        
+         
+          <a href="https://www.facebook.com/profile.php?id=61587799234794" className="hover:text-[#F07D00] transition-colors duration-300"><FaFacebook className="w-7 h-7"/></a> 
+          <a href="https://wa.me/242066067237" className="hover:text-[#F07D00] transition-colors duration-300"><FaWhatsapp className="w-7 h-7"/></a>        
         </div>
       </div>
       <div className="flex flex-col ">

@@ -9,8 +9,8 @@ interface Pros {
 
 export default function Layout({ children } : Pros) {
   const location = useLocation();
-  const routesNav = ['/','/Catalogues','/Produits'];
-  const routesFooter= ['/','/Catalogues','/Produits'];
+  const routesNav = ['/','/Catalogues','/Produits','/Panier'];
+  const routesFooter= ['/','/Catalogues','/Produits','/Panier'];
 
   const showNav = routesNav.includes(location.pathname);
   const showFooter = routesFooter.includes(location.pathname);

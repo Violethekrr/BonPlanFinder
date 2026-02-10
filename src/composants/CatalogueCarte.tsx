@@ -1,14 +1,15 @@
 import React from "react";
 import type { Catalogue } from "../Constantes";
-import { bgBlue, textBlue, borderBlue } from "../Constantes"
+import { bgBlue, textBlue } from "../Constantes"
 import { Link } from "react-router-dom";
-import { Package, Sparkles, CupSoda } from "lucide-react";
+import { Package, Sparkles, CupSoda, Utensils } from "lucide-react";
 import { useTheme } from "../Context/Theme";
 
 const iconsMap = {
   package: Package,
   cosmetique: Sparkles,
   boisson: CupSoda,
+  aliment:Utensils
 };
 
 export type IconName = keyof typeof iconsMap;
@@ -23,7 +24,7 @@ function DynamicIcon({ type, size = 24, color = "black" }: DynamicIconProps) {
   const IconComponent = iconsMap[type];
   if (!IconComponent) {
     console.error(`Icône "${type}" introuvable dans iconsMap`);
-    return <span>❓</span>; // fallback
+    return <span>?</span>; // fallback
   }
   return <IconComponent size={size} color={color} />;
 }
