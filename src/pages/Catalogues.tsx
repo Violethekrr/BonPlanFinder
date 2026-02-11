@@ -6,7 +6,6 @@ import Pagination from "../composants/Pagination";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../Context/Theme";
 
-
 export default function Catalogues() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -113,7 +112,9 @@ export default function Catalogues() {
                 Aucun catalogue ne correspond à votre recherche.
               </motion.p>
             ) : 
-            paginatedCatalogues.map((cat, i) => (
+            paginatedCatalogues.map((cat, i) => 
+            
+              (
               <motion.div
                 key={i} 
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -127,7 +128,7 @@ export default function Catalogues() {
                     icone: cat.icone,
                     titre: cat.titre, 
                     description: cat.description, 
-                    image: cat.image 
+                    image: cat.image
                   }}
                 />
               </motion.div>

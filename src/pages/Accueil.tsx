@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { produits, pieces, catalogues } from "../Constantes";
+import { produits, pieces, catalogues, type piecesProps } from "../Constantes";
 import { useTheme } from "../Context/Theme";
 import { 
   FiSearch, FiUsers, FiCheckCircle, FiMapPin, FiShoppingBag, 
@@ -9,6 +9,7 @@ import {
   FiArrowRight, FiHome, FiTag, FiShare2, FiDollarSign
 } from 'react-icons/fi';
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { urlToWebp } from "./Produits";
 
 export default function Accueil() {
   const navigate = useNavigate();
@@ -21,6 +22,13 @@ export default function Accueil() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const premierProduit= produits.filter((p)=> p.id_type===2 && p.nom.includes('ananas'))
   const premierePiece= pieces.filter((p)=> p.id_produit=== premierProduit[0].id)
+  const [webp,setWebp]= useState<string | null>(null)
+
+  useEffect(() => { let mounted = true; 
+    (async () => { 
+      const img = await urlToWebp(premierProduit[0].image); 
+      if (mounted) setWebp(img); })(); 
+      return () => { mounted = false }; }, [premierProduit[0].image]);
 
   const [searchSuggestions, setSearchSuggestions] = useState<Array<{
     type: 'produit' | 'categorie';
@@ -324,6 +332,94 @@ const tutorialSteps = [
       if (interval) clearInterval(interval);
     };
   }, [isAutoPlaying, showTutorial, tutorialSteps.length]);
+interface Props {
+  id: number;
+  id_type: number;
+  nom: string;
+  description: string;
+  image: string;
+  index: number;
+  categoryName: string;
+  minPrice: number;
+  pieces: piecesProps [];
+}
+
+
+
+function GetProduit({id_type, nom, description, image, index, categoryName, minPrice, pieces }: Props){
+   const [webpImage, setWebpImage] = useState<string | null>(null);
+  
+    useEffect(() => { let mounted = true; 
+      (async () => { 
+        const img = await urlToWebp(image); 
+        if (mounted) setWebpImage(img); })(); 
+        return () => { mounted = false }; }, [image]);
+
+return (
+  <motion.div 
+
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: index * 0.1 }}
+    whileHover={{ y: -5 }}
+    onClick={() => goToProducts(id_type, categoryName)}
+    className={`rounded-xl overflow-hidden hover:shadow-xl transition-all duration-500 group cursor-pointer ${
+      isDark ? 'bg-gray-700 shadow-lg' : 'bg-white shadow-md shadow-gray'
+    }`}
+  >
+    <div className="h-48 sm:h-56 md:h-64 lg:h-72 p-4 overflow-hidden relative">
+      <img
+        src={webpImage!}
+        loading="lazy"
+        alt={nom}
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+      />
+      <div className="absolute top-4 left-4 bg-[#F47D1C] text-white text-xs font-bold px-3 py-1 rounded-full">
+        MEILLEUR PRIX
+      </div>
+    </div>
+    
+    <div className="p-4 md:p-5 flex flex-col gap-3 md:gap-4">
+      <p className="text-[#F47D1C] text-xs md:text-sm font-medium">{categoryName}</p>
+      <h3 className={`font-medium text-base md:text-lg group-hover:text-[#F47D1C] transition-colors duration-300 ${isDark ? 'text-white' : ''}`}>
+        {nom}
+      </h3>
+      <div className="flex items-center gap-3 md:gap-6 flex-wrap">
+        <p className="text-[#7EBA41] font-bold text-base md:text-lg">
+          {minPrice} FCFA
+        </p>
+        {/* <p className={`font-semibold text-sm line-through ${isDark ? 'text-gray-400' : 'text-[#979090]'}`}>
+          -{Math.floor(product.minPrice * 0.3)} fcfa
+        </p>
+        <div className="bg-[#ECC988] px-2 md:px-3 py-1 rounded">
+          <p className="text-[#B87207] font-bold text-xs md:text-sm">
+            Économisez {Math.floor(product.minPrice * 0.6)} fcfa
+          </p>
+        </div> */}
+      </div>
+      <p className={`text-xs md:text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+        {description}
+      </p>
+      <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1`}>
+        <FiMapPin className="w-4 h-4" />
+        Disponible dans votre région
+      </p>
+      
+      <div className="flex items-center gap-2 mt-2">
+        <div className={`text-xs px-2 py-1 rounded ${isDark ? 'bg-gray-600' : 'bg-gray-100'}`}>
+          {pieces.length} options
+        </div>
+        {pieces.length > 0 && (
+          <div className={`text-xs px-2 py-1 rounded ${isDark ? 'bg-gray-600' : 'bg-gray-100'}`}>
+            À partir de {Math.min(...pieces.map(p => p.nombre_de_pieces))} {id_type===2? 'ml':'pcs'} 
+          </div>
+        )}
+      </div>
+    </div>
+  </motion.div>
+)
+}
 
   return (
     <div className={`pt-2 pb-10 space-y-10 min-h-screen ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
@@ -604,7 +700,7 @@ const tutorialSteps = [
             animate="visible"
             className="flex flex-wrap justify-center gap-2 md:gap-3"
           >
-            {catalogues.map((c, index) => (
+           {catalogues.slice(0, 4).map((c, index) => (
               <motion.span
                 key={c.id}
                 variants={itemVariants}
@@ -641,7 +737,8 @@ const tutorialSteps = [
               >
                 <div className="h-56 sm:h-64 md:h-72 overflow-hidden">
                   <img
-                    src={premierProduit[0].image}
+                    src={webp ?? premierProduit[0].image}
+                    loading="lazy"
                     alt="Produit"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -814,68 +911,8 @@ const tutorialSteps = [
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pt-4 md:pt-6">
-          {getCheapestProducts.map((product, index) => (
-            <motion.div 
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              onClick={() => goToProducts(product.id_type, product.categoryName)}
-              className={`rounded-xl overflow-hidden hover:shadow-xl transition-all duration-500 group cursor-pointer ${
-                isDark ? 'bg-gray-700 shadow-lg' : 'bg-white shadow-md shadow-gray'
-              }`}
-            >
-              <div className="h-48 sm:h-56 md:h-64 lg:h-72 p-4 overflow-hidden relative">
-                <img
-                  src={product.image}
-                  alt={product.nom}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute top-4 left-4 bg-[#F47D1C] text-white text-xs font-bold px-3 py-1 rounded-full">
-                  MEILLEUR PRIX
-                </div>
-              </div>
-              
-              <div className="p-4 md:p-5 flex flex-col gap-3 md:gap-4">
-                <p className="text-[#F47D1C] text-xs md:text-sm font-medium">{product.categoryName}</p>
-                <h3 className={`font-medium text-base md:text-lg group-hover:text-[#F47D1C] transition-colors duration-300 ${isDark ? 'text-white' : ''}`}>
-                  {product.nom}
-                </h3>
-                <div className="flex items-center gap-3 md:gap-6 flex-wrap">
-                  <p className="text-[#7EBA41] font-bold text-base md:text-lg">
-                    {product.minPrice} FCFA
-                  </p>
-                  {/* <p className={`font-semibold text-sm line-through ${isDark ? 'text-gray-400' : 'text-[#979090]'}`}>
-                    -{Math.floor(product.minPrice * 0.3)} fcfa
-                  </p>
-                  <div className="bg-[#ECC988] px-2 md:px-3 py-1 rounded">
-                    <p className="text-[#B87207] font-bold text-xs md:text-sm">
-                      Économisez {Math.floor(product.minPrice * 0.6)} fcfa
-                    </p>
-                  </div> */}
-                </div>
-                <p className={`text-xs md:text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                  {product.description}
-                </p>
-                <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1`}>
-                  <FiMapPin className="w-4 h-4" />
-                  Disponible dans votre région
-                </p>
-                
-                <div className="flex items-center gap-2 mt-2">
-                  <div className={`text-xs px-2 py-1 rounded ${isDark ? 'bg-gray-600' : 'bg-gray-100'}`}>
-                    {product.pieces.length} options
-                  </div>
-                  {product.pieces.length > 0 && (
-                    <div className={`text-xs px-2 py-1 rounded ${isDark ? 'bg-gray-600' : 'bg-gray-100'}`}>
-                      À partir de {Math.min(...product.pieces.map(p => p.nombre_de_pieces))} {product.id_type===2? 'ml':'pcs'} 
-                    </div>
-                  )}
-                </div>
-              </div>
-            </motion.div>
+          {getCheapestProducts.map((product, index) =>  (
+            <GetProduit key={index} index={index} id={product.id} id_type={product.id_type} nom={product.nom} description={product.description} image={product.image} categoryName={product.categoryName} minPrice={product.minPrice} pieces={product.pieces}/>
           ))}
         </div>
         

@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Accueil from "./pages/Accueil";
 import Catalogues from "./pages/Catalogues";
-import Produits from "./pages/Produits";
+import {Produits} from "./pages/Produits";
 import Contact from "./pages/Contact";
 import Panier from "./pages/Panier";
 import Layout from "./composants/Layout";

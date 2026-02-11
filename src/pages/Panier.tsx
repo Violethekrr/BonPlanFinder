@@ -1,8 +1,9 @@
 import { useTheme } from "../Context/Theme";
-import { textOrange, bgOrange, bgBlue } from "../Constantes";
+import { textOrange, bgOrange, bgBlue, type panierProps } from "../Constantes";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trash2, ShoppingCart, Plus, Minus, ShoppingBag, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { urlToWebp } from "./Produits";
 
 
 export default function Panier() {
@@ -120,6 +121,131 @@ export default function Panier() {
       }
     }
   };
+function PanierItem ({id, produit,piece}: panierProps){
+    const [webpImage, setWebpImage] = useState<string | null>(null);
+
+    useEffect(() => { 
+      let mounted = true; 
+      (async () => { 
+        const img = await urlToWebp(produit.image); 
+        if (mounted) setWebpImage(img); })(); 
+        return () => { mounted = false }; }, [produit.image]);
+   return (
+      <motion.div
+          
+          variants={itemVariants}
+          layout
+          exit="exit"
+          className={`grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-4 p-4 rounded-lg shadow-lg ${
+            isDark
+              ? "bg-gray-800 bg-opacity-50 backdrop-blur-sm "
+              : "bg-white"
+          }`}
+        >
+          {/* Image du produit */}
+          <div className="relative overflow-hidden rounded-lg h-32 sm:h-full">
+            <img
+              src={webpImage?? produit.image}
+              loading="lazy"
+              alt={produit.nom}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Détails du produit */}
+          <div className="flex flex-col justify-between gap-3">
+            <div>
+              <h3
+                className={`font-semibold text-base md:text-lg ${
+                  isDark ? "text-white" : "text-gray-900"
+                }`}
+              >
+                {produit.nom}
+              </h3>
+              <p
+                className={`text-sm ${
+                  isDark ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                {produit.description}
+              </p>
+              <p
+                className={`text-sm mt-1 ${
+                  isDark ? "text-gray-500" : "text-gray-500"
+                }`}
+              >
+                {piece.nombre_de_pieces*getQuantite(id)}{" "}
+                {produit.id_type === 2 ? "ml" : "pcs"}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {/* Contrôles de quantité */}
+              <div className="flex items-center gap-2">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => diminuerQuantite(id)}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    isDark
+                      ? "bg-gray-700 hover:bg-gray-600 border border-gray-600"
+                      : "bg-gray-100 hover:bg-gray-200 border border-gray-300"
+                  }`}
+                >
+                  <Minus className="w-4 h-4" />
+                </motion.button>
+
+                <span
+                  className={`px-4 py-2 font-medium ${
+                    isDark ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {getQuantite(id)}
+                </span>
+
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => augmenterQuantite(id)}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    isDark
+                      ? "bg-gray-700 hover:bg-gray-600 border border-gray-600"
+                      : "bg-gray-100 hover:bg-gray-200 border border-gray-300"
+                  }`}
+                >
+                  <Plus className="w-4 h-4" />
+                </motion.button>
+              </div>
+
+              {/* Prix et suppression */}
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                    {piece.prix} FCFA × {getQuantite(id)}
+                  </p>
+                  <p className={`font-bold text-lg ${textOrange}`}>
+                    {piece.prix * getQuantite(id)} FCFA
+                  </p>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => supprimerItem(id)}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    isDark
+                      ? "bg-red-900/30 text-red-400 hover:bg-red-900/50"
+                      : "bg-red-50 text-red-600 hover:bg-red-100"
+                  }`}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+   )
+}
 
   return (
     <motion.div
@@ -236,118 +362,7 @@ export default function Panier() {
 
             <AnimatePresence mode="popLayout">
               {panier.map((item) => (
-                <motion.div
-                  key={item.id}
-                  variants={itemVariants}
-                  layout
-                  exit="exit"
-                  className={`grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-4 p-4 rounded-lg shadow-lg ${
-                    isDark
-                      ? "bg-gray-800 bg-opacity-50 backdrop-blur-sm "
-                      : "bg-white"
-                  }`}
-                >
-                  {/* Image du produit */}
-                  <div className="relative overflow-hidden rounded-lg h-32 sm:h-full">
-                    <img
-                      src={item.produit.image}
-                      alt={item.produit.nom}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  {/* Détails du produit */}
-                  <div className="flex flex-col justify-between gap-3">
-                    <div>
-                      <h3
-                        className={`font-semibold text-base md:text-lg ${
-                          isDark ? "text-white" : "text-gray-900"
-                        }`}
-                      >
-                        {item.produit.nom}
-                      </h3>
-                      <p
-                        className={`text-sm ${
-                          isDark ? "text-gray-400" : "text-gray-600"
-                        }`}
-                      >
-                        {item.produit.description}
-                      </p>
-                      <p
-                        className={`text-sm mt-1 ${
-                          isDark ? "text-gray-500" : "text-gray-500"
-                        }`}
-                      >
-                        {item.piece.nombre_de_pieces*getQuantite(item.id)}{" "}
-                        {item.produit.id_type === 2 ? "ml" : "pcs"}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      {/* Contrôles de quantité */}
-                      <div className="flex items-center gap-2">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => diminuerQuantite(item.id)}
-                          className={`p-2 rounded-lg transition-all duration-200 ${
-                            isDark
-                              ? "bg-gray-700 hover:bg-gray-600 border border-gray-600"
-                              : "bg-gray-100 hover:bg-gray-200 border border-gray-300"
-                          }`}
-                        >
-                          <Minus className="w-4 h-4" />
-                        </motion.button>
-
-                        <span
-                          className={`px-4 py-2 font-medium ${
-                            isDark ? "text-white" : "text-gray-900"
-                          }`}
-                        >
-                          {getQuantite(item.id)}
-                        </span>
-
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => augmenterQuantite(item.id)}
-                          className={`p-2 rounded-lg transition-all duration-200 ${
-                            isDark
-                              ? "bg-gray-700 hover:bg-gray-600 border border-gray-600"
-                              : "bg-gray-100 hover:bg-gray-200 border border-gray-300"
-                          }`}
-                        >
-                          <Plus className="w-4 h-4" />
-                        </motion.button>
-                      </div>
-
-                      {/* Prix et suppression */}
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-                            {item.piece.prix} FCFA × {getQuantite(item.id)}
-                          </p>
-                          <p className={`font-bold text-lg ${textOrange}`}>
-                            {item.piece.prix * getQuantite(item.id)} FCFA
-                          </p>
-                        </div>
-
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => supprimerItem(item.id)}
-                          className={`p-2 rounded-lg transition-all duration-200 ${
-                            isDark
-                              ? "bg-red-900/30 text-red-400 hover:bg-red-900/50"
-                              : "bg-red-50 text-red-600 hover:bg-red-100"
-                          }`}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </motion.button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+                <PanierItem key={item.id} id={item.id} produit={item.produit} piece={item.piece} />
               ))}
             </AnimatePresence>
           </motion.div>

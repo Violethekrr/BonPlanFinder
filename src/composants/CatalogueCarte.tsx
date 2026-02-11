@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { Catalogue } from "../Constantes";
 import { bgBlue, textBlue } from "../Constantes"
 import { Link } from "react-router-dom";
 import { Package, Sparkles, CupSoda, Utensils } from "lucide-react";
 import { useTheme } from "../Context/Theme";
+import { urlToWebp } from "../pages/Produits";
 
 const iconsMap = {
   package: Package,
@@ -37,6 +38,13 @@ type Props = {
 
 const CatalogueCarte: React.FC<Props> = ({ item }) => {
   const { isDark } = useTheme();
+  const [webpImage, setWebpImage] = useState<string | null>(null);
+
+  useEffect(() => { let mounted = true; 
+    (async () => { 
+      const img = await urlToWebp(item.image!); 
+      if (mounted) setWebpImage(img); })(); 
+      return () => { mounted = false }; }, [item.image]);
   return (
     <article className={`relative flex-col border ${isDark ? 'bg-gray-800' + ' ': 'bg-gray-50 border-gray-50'} shadow-lg rounded-lg hover:scale-105 transition-all duration-300`}>
       <div className={`${isDark ? `bg-gray-50 ${textBlue}` : 'text-white ' + bgBlue} absolute w-[106%] left-[-3%] rounded-sm flex justify-center items-center py-2 md:py-3 xl:py-4 z-10 gap-4`}>
@@ -44,7 +52,7 @@ const CatalogueCarte: React.FC<Props> = ({ item }) => {
         <h4 className={`text-xs md:text-sm xl:text-base font-bold`}>{item.titre}</h4>
       </div>
       <div className="w-full h-28 md:h-42 xl:h-56">
-        <img src={item.image?? "./carton.jpg"} alt="Illustration" className="w-full h-full object-cover"/>
+        <img loading="lazy" src={webpImage??item.image?? "./carton.jpg"} alt="Illustration" className="w-full h-full object-cover"/>
       </div>
       <div className={`w-full flex justify-center items-center px-4 py-2 md:py-3 xl:py-4`}>
         <p className={`${isDark ? 'text-white' : textBlue} text-center text-xs md:text-sm xl:text-base my-2`}>{item.description}</p>
@@ -57,3 +65,5 @@ const CatalogueCarte: React.FC<Props> = ({ item }) => {
 };
 
 export default CatalogueCarte;
+
+

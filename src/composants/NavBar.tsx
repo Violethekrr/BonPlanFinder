@@ -40,7 +40,7 @@ export default function Navbar() {
         } ${scrolled ? "shadow-md shadow-gray-700 backdrop-blur-lg " : "bg-none"}`}
       >
         <div>
-          <img src="/bpf1.png" alt="" className={`w-30 h-30 relative bottom-8 ${isDark? '': ''}`}/>
+          <img src="/bpf1.webp" alt="" className={`w-30 h-30 relative bottom-8 ${isDark? '': ''}`}/>
         </div>
         <div className={`flex gap-10 justify-center items-center `}>
           <NavLink to="/" className={linkClass("/")}>Accueil</NavLink>
@@ -60,7 +60,7 @@ export default function Navbar() {
           <Menu className="w-8 h-8" />
         </div>
         <div className="">
-          <img src="/bpf.png" alt="" className={`w-24 h-24 `} />
+          <img src="/bpf.webp" alt="" className={`w-24 h-24 `} />
         </div>
       </div>
       

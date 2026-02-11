@@ -64,7 +64,7 @@ const itemVariants = {
         initial="hidden"
         animate="visible"
         className='flex flex-col justify-center items-center '>
-        <img src="/bpf1.png" alt="Icon" className="w-[70%] h-[70%] sm:w-auto sm:h-auto"/>
+        <img src="/bpf1.webp" alt="Icon" className="w-[70%] h-[70%] sm:w-auto sm:h-auto"/>
         <p className={`text-xl md:text-2xl xl:text-3xl font-bold relative bottom-20 sm:bottom-30 ${textBlue}`}>Contactez-nous!!</p>
       </motion.div>
 
