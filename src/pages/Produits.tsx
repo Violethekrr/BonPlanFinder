@@ -327,9 +327,9 @@ function ProduitItem({produit,piece,pieceCours,dejaDansPanier}:{produit: produit
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className={`flex justify-between shadow-2xl ${isDark? `border border-gray-700 ` :`${bgBlue}`} p-5 items-center rounded-md max-w-6xl mx-auto w-full`}
+        className={`sm:flex sm:justify-between shadow-2xl  ${isDark? `border border-gray-700 ` :`${bgBlue}`} p-5 items-center rounded-md max-w-6xl mx-auto w-full`}
       >
-        <div className="flex w-[45%] justify-center items-center sm:w-[70%] bg-white rounded-lg focus-within:border-[#F07D00] border border-transparent overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div className="flex  justify-center items-center mb-2 sm:w-[70%] bg-white rounded-lg focus-within:border-[#F07D00] border border-transparent overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
           <input  
             value={rechercher} 
             onChange={(e) => setRechercher(e.target.value)} 
@@ -353,7 +353,7 @@ function ProduitItem({produit,piece,pieceCours,dejaDansPanier}:{produit: produit
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setSelect(!select)} 
-              className={`flex items-center gap-1 border font-medium rounded-lg px-4 py-2 text-sm transition-all duration-200 border-gray-300`}
+              className={`flex items-center gap-1 border font-medium rounded-lg px-4 py-2 text-xs sm:text-sm transition-all duration-200 border-gray-300`}
             >
               {trie} {select ? <ChevronUp className="w-4 h-4"/> : <ChevronDown className="w-4 h-4"/>}
             </motion.button>
@@ -482,7 +482,7 @@ function ProduitItem({produit,piece,pieceCours,dejaDansPanier}:{produit: produit
       ) }
       {ajouter &&
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" >
-          <div className={`flex flex-col justify-center items-center w-[40%] h-[20%] rounded-xl ${!isDark? 'bg-white' : 'bg-gray-800'} shadow-md`}>
+          <div className={`flex flex-col justify-center items-center w-auto h-auto rounded-xl p-10 ${!isDark? 'bg-white' : 'bg-gray-800'} shadow-md`}>
              <div className="flex items-center gap-3 text-[#5AA136]">
             <CheckCircle className="w-6 h-6" />
             <p className="font-medium">Produit ajouté au panier !</p>
@@ -494,7 +494,7 @@ function ProduitItem({produit,piece,pieceCours,dejaDansPanier}:{produit: produit
             onClick={()=> setAjouter(false)}
             className={`flex justify-center items-center py-1 rounded-lg w-[40%] transition-colors bg-[#5AA136] hover:bg-[#4b852e] text-white`}
           >
-             Compris
+             Merci
           </button>
         </div>
           </div>

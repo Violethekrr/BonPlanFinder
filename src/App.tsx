@@ -7,11 +7,12 @@ import Contact from "./pages/Contact";
 import Panier from "./pages/Panier";
 import Layout from "./composants/Layout";
 import NonTrouvé from "./pages/NonTrouvé";
-
+import { ScrollToTop } from "./composants/ScrollToTop";
 
 const App: React.FC = () => {
   return (
     <Router >
+       <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<Accueil />} />

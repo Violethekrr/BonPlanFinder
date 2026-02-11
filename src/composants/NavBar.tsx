@@ -70,7 +70,7 @@ export default function Navbar() {
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5 }}
-          className={`z-40 mt-18 absolute flex flex-col sm:hidden gap-3 p-5 font-medium ${
+          className={`z-40 mt-18 fixed flex flex-col sm:hidden gap-3 p-5 font-medium ${
             !isDark
             ? "text-gray-600 bg-white"
             : "text-white bg-gray-800 "
@@ -78,7 +78,7 @@ export default function Navbar() {
         >
           <NavLink to="/" className={linkClass("/")}>Accueil</NavLink>
          <NavLink to="/Catalogues" className={({isActive})=> isActive || location.pathname.startsWith("/Produits")?    `relative inline-block after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:transition-all after:duration-500  ${isDark ?  `${textOrange} after:w-full after:bg-[#F07D00]`: `${textOrange} after:w-full after:bg-[#F07D00]` }`  : `relative inline-block after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:transition-all after:duration-500  ${isDark ? `hover:text-[#F07D00] after:w-0 hover:after:w-full after:bg-[#F07D00]`: `hover:text-[#F07D00] after:w-0 hover:after:w-full after:bg-[#F07D00]`} `  }>Catalogues</NavLink> 
-          <NavLink to="/Panier" className={linkClass("/Panier")}>Panier</NavLink>
+          <NavLink to="/Panier" className={linkClass("/Panier")}><p>Panier</p> {panier.length>0 &&<p className={`absolute bottom-0 left-12 px-2.5 pb-1 pt-0.5 text-xs flex justify-center items-center rounded-full text-white bg-red-600`}>{panier.length}</p>} </NavLink>
           <NavLink to="/Contact" className={linkClass("/Contact")}>Contact</NavLink> 
           <button onClick={()=>toggleTheme()}>{isDark? <Sun /> : <Moon/>}</button>
         </motion.div>

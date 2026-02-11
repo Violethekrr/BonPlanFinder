@@ -58,14 +58,14 @@ export default function Catalogues() {
           <ShoppingCart className={`w-8 h-8 md:w-10 md:h-10 xl:w-12 xl:h-12 text-gray-400`} />
           <h1 className='text-3xl md:text-4xl xl:text-5xl'>Nos catalogues</h1>
         </div>
-        <div id='Search-main' className='flex justify-center items-center mx-12 md:mx-32 xl:mx-52 my-6'>
+        <div id='Search-main' className='flex justify-center items-center md:mx-32 xl:mx-52 my-6'>
           <input 
             type="text" 
             value={search} 
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher un catalogue" 
-            className='placeholder:text-xs peer border border-[#34495E] border-r-0 focus:outline-none w-full bg-white focus:border-[#F07D00] p-2 text-gray-900 h-6 md:h-10 xl:h-14'/>
-          <button className={`flex justify-center items-center border border-[#34495E] border-l-0 peer-focus:border-[#F07D00] bg-green-600 w-10 h-6 md:w-14 md:h-10 xl:w-18 xl:h-14`}>
+            className='placeholder:text-sm py-4 peer border border-[#34495E] border-r-0 focus:outline-none w-full bg-white focus:border-[#F07D00] p-2 text-gray-900 h-6 md:h-10 xl:h-14'/>
+          <button className={`flex justify-center items-center py-4 border border-[#34495E] border-l-0 peer-focus:border-[#F07D00] bg-green-600 w-10 h-6 md:w-14 md:h-10 xl:w-18 xl:h-14`}>
             <Search className='w-4 h-4 md:w-8 md:h-8 xl:w-10 xl:h-10 text-white'/>
           </button>
         </div>
